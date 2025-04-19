@@ -98,6 +98,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
     }
 </style>
 
+<!-- Keep image in container -->
+<style>
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .image-container img {
+    margin: 10px;
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<div class="container">
+  <h1 style="text-align:center; font-weight: bolder; color: #555;">The 3rd Phenomic Medicine Short Course</h1>
+  <h2 style="text-align:center; font-weight: bolder; color: #555;">Khon Kaen University National Phenome Institute (KKUNPhI)</h2>
+  <h2 style="text-align:center; font-weight: bolder; color: #555;">21-30 April 2025</h2>
+
+  <div class="image-container">
+    <img src="src/pages/Ads/AVANCE_IVDr_Ad.png" width="800">
+    <img src="src/pages/Ads/WTE.jpeg" width="800">
+  </div>
 
   <h2 style="text-align:center; font-weight: bolder; color: #555;">Workshop Timetable</h2>
 
@@ -249,30 +274,13 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
 </div>
 
-
-
-  <h1>Content</h1>
-
-
-<ol style="list-style-type: decimal; color: #1b6d85;">
-  <li>
-    <p><a href="src/page/Metagenomics/metagenomics.html">Metagenomics
-    Analysis</a></p>
-  </li>
-  <li>
-    <p><a href="src/page/6_metID_README.html">Metabolite
-    Identification</a></p>
-    <ol style="list-style-type: circle; color: #1b6d85;">
-      <li>
-        <p><a href="https://systemsomicslab.github.io/mtbinfo.github.io/MS-DIAL/tutorial">MS-DIAL tutorial</a></p>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p><a href="src/page/5_data_analysis_README.html">Multivariate
-    statistical Analysis</a></p>
-  </li>
-</ol>
+<h4>
+  <a href="https://drive.google.com/drive/folders/1vAlhYaQVFAisDaCFSE59pvplr6ocXKUj" target="_blank" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    <button style="background-color: #1b6d85; color: white; padding: 5px 10px; border: none; border-radius: 2.5px; cursor: pointer; font-size: 15px;">
+      Handouts
+    </button>
+  </a>
+</h4>
 
 <h4>
   <a href="https://drive.google.com/drive/folders/1vAlhYaQVFAisDaCFSE59pvplr6ocXKUj" target="_blank" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"><button style="background-color: #1b6d85; color: white; padding: 5px 10px; border: none; border-radius: 2.5px; cursor: pointer; font-size: 15px;"> Handouts </button></a>
@@ -285,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 <h4>
   <button onclick="location.href='src/page/group-assignment-data.html'" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Go to assignment </button>
 </h4>
+
 
 </div>
 </div>
