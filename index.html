@@ -60,13 +60,27 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
+
+
     details {
       border: 1px solid #ccc;
       border-radius: 8px;
       margin-bottom: 1rem;
       overflow: hidden;
       background: #ffffff;
-      transition: box-shadow 0.3s;
+      transition: all 0.4s ease-in-out;
+    }
+
+    details[open] {
+      animation: dropdownOpen 0.95s ease;
+    }
+    details[open] summary {
+      background: var(--primary-color);
+      color: white;
+    }
+    details[open] summary:hover {
+      background: var(--primary-color);
+      color: white;
     }
 
     summary {
@@ -103,7 +117,7 @@
     .content-links a {
       display: block;
       padding: 1rem;
-      background: #e0f7fa;
+      background: #3f8fd173;
       border-left: 4px solid var(--primary-color);
       text-decoration: none;
       color: var(--secondary-color);
