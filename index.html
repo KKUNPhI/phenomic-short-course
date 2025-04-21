@@ -1,130 +1,192 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-
-
-
-<title>Home page</title>
-
-<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
-// be compatible with the behavior of Pandoc < 2.8).
-document.addEventListener('DOMContentLoaded', function(e) {
-  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
-  var i, h, a;
-  for (i = 0; i < hs.length; i++) {
-    h = hs[i];
-    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
-    a = h.attributes;
-    while (a.length > 0) h.removeAttribute(a[0].name);
-  }
-});
-</script>
-
-
-<div>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 3rd Phenomic Medicine Short Course</title>
 
   <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #fff;
-        color: #333;
+    :root {
+      --primary-color: #3f8fd1;
+      --secondary-color: #1b1b1b;
+      --text-light: #9bb1c3;
+      --text-dark: #212121;
+      --bg-light: #f4f6f7;
+      --bg-dark: #121212;
     }
 
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    h1, h2, h4 {
+      text-align: center;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .image-container img {
+      max-width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+
+
     details {
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background: #f9f9f9;
-        padding: 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      background: #ffffff;
+      transition: all 0.4s ease-in-out;
+    }
+
+    details[open] {
+      animation: dropdownOpen 0.95s ease;
+    }
+    details[open] summary {
+      background: var(--primary-color);
+      color: white;
+    }
+    details[open] summary:hover {
+      background: var(--primary-color);
+      color: white;
     }
 
     summary {
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        padding: 12px 20px;
-        background: #1b6d85;
-        color: white;
-        border-radius: 5px 5px 0 0;
-        margin: 0;
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      padding: 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-    }
-
-    th, td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        vertical-align: top;
-    }
-
-    th {
-        background-color: #f5f5f5;
-        font-weight: bold;
-    }
-
-    tr:last-child td {
-        border-bottom: none;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;
-      margin-top: 10px;
-      background: white;
+      margin: 0;
+      font-size: 1rem;
     }
 
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 30%;
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
     }
 
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 70%;
-      padding-left: 40px; /* adjust this to match the red line */
+    th {
+      background: #f0f0f0;
+      font-weight: 700;
     }
-</style>
 
-<!-- Keep image in container -->
-<style>
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+    .content-links table {
+      width: 100%;
+      margin-top: 2rem;
+    }
 
-  .image-container img {
-    margin: 10px;
-    max-width: 100%;
-    height: auto;
-  }
-</style>
+    .content-links a {
+      display: block;
+      padding: 1rem;
+      background: #3f8fd173;
+      border-left: 4px solid var(--primary-color);
+      text-decoration: none;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+      transition: background 0.3s;
+    }
 
-<div class="container">
-  <h1 style="text-align:center; font-weight: bolder; color: #555;">The 3rd Phenomic Medicine Short Course</h1>
-  <h2 style="text-align:center; font-weight: bolder; color: #555;">Khon Kaen University National Phenome Institute (KKUNPhI)</h2>
-  <h2 style="text-align:center; font-weight: bolder; color: #555;">21-30 April 2025</h2>
+    .content-links a:hover {
+      background: #7aa6ca;
+    }
 
-  <div class="image-container">
-    <img src="src/pages/Ads/AVANCE_IVDr_Ad.png" width="800">
-    <img src="src/pages/Ads/WTE.jpeg" width="800">
-  </div>
+    .button-link, button {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      margin: 1rem auto;
+      text-align: center;
+    }
 
-  <h2 style="text-align:center; font-weight: bolder; color: #555;">Workshop Timetable</h2>
+    .footer-logo {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem 0;
+      gap: 0.5rem;
+    }
+
+    .footer-logo img {
+      width: 10%;
+      transition: transform 0.3s;
+    }
+
+    .footer-logo img:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: var(--text-light);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--text-light);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>The 3rd Phenomic Medicine Short Course</h1>
+    <h2>Khon Kaen University National Phenome Institute (KKUNPhI)</h2>
+    <h2>21-30 April 2025</h2>
+
+    <div class="image-container">
+      <img src="src/pages/Ads/AVANCE_IVDr_Ad.png" alt="AVANCE IVDr">
+      <img src="src/pages/Ads/WTE.jpeg" alt="WTE Ad">
+    </div>
+
+    <h2>Workshop Timetable</h2>
 
   <details open>
     <summary>21 April 2025</summary>
@@ -272,100 +334,55 @@ document.addEventListener('DOMContentLoaded', function(e) {
   </details>
 
 
+
+  <div class="content-links">
+    <h2>Workshop Content</h2>
+    <table>
+      <tr><td><a href="src/pages/Sample_preparation_embedded.html">Sample preparation</a></td></tr>
+      <tr><td><a href="src/pages/03 R session/Content/Rdocument.html">Basic R programming</a></td></tr>
+      <tr><td><a href="src/pages/Genomics_embedded.html">Genomics</a></td></tr>
+      <tr><td><a href="src/pages/Transcriptomics_embedded.html">Transcriptomics</a></td></tr>
+      <tr><td><a href="src/pages/Proteomics_embedded.html">Proteomics</a></td></tr>
+      <tr><td><a href="src/pages/CRISPR_embedded.html">CRISPR</a></td></tr>
+      <tr><td><a href="src/pages/Metabolomics_embedded.html">Metabolomics</a></td></tr>
+      <tr><td><a href="src/pages/Microbiome_embedded.html">Microbiome</a></td></tr>
+      <tr><td><a href="src/pages/Data_integration_embedded.html">Data integration</a></td></tr>
+    </table>
+  </div>
+
+  <div style="text-align:center">
+    <a class="button-link" href="https://drive.google.com/drive/folders/1vAlhYaQVFAisDaCFSE59pvplr6ocXKUj" target="_blank">Lecture Notes</a>
+    <br>
+    <button onclick="location.href='src/pages/Pre-post-test/Pre-test_Post-test-The-3rd-Phenomic-Medicine-Short-Course.html'">Pre-test/Post-test</button>
+  </div>
 </div>
 
-
-<h4>
-  <a href="https://drive.google.com/drive/folders/1vAlhYaQVFAisDaCFSE59pvplr6ocXKUj" target="_blank" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"><button style="background-color: #1b6d85; color: white; padding: 5px 10px; border: none; border-radius: 2.5px; cursor: pointer; font-size: 15px;"> Handouts </button></a>
-</h4>
-
-<h4>
-  <button onclick="location.href='src/pages/Pre-post-test/Pre-test_Post-test-The-3rd-Phenomic-Medicine-Short-Course.html'" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 30;"> Pre-test/Post-test </button>
-</h4>
-
-<h4>
-  <button onclick="location.href='src/page/group-assignment-data.html'" style="background-color: #1b6d85; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Go to assignment </button>
-</h4>
-
-
-</div>
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
-  });
-});
-</script>
-
-<!-- code folding -->
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-
-</body>
-</html>
-
-
-
-<style>
-  footer {
-    background-color: #343a40;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-  }
-  footer a {
-    color: #f8f9fa;
-    text-decoration: none;
-  }
-  footer a:hover {
-    text-decoration: underline;
-  }
-  </style>
-  
+  <div class="footer-logo">
+      <img src="src/pages/img/logo/1.svg">
+      <img src="src/pages/img/logo/2.svg">
+      <img src="src/pages/img/logo/3.svg">
+      <img src="src/pages/img/logo/4.svg">
+      <img src="src/pages/img/logo/5.svg">
+      <img src="src/pages/img/logo/6.svg">
+      <img src="src/pages/img/logo/7.svg">
+      <img src="src/pages/img/logo/8.svg">
+      <img src="src/pages/img/logo/9.svg">
+      <img src="src/pages/img/logo/10.svg">
+      <img src="src/pages/img/logo/11.svg">
+      <img src="src/pages/img/logo/12.svg">
+      <img src="src/pages/img/logo/13.svg">
+      <img src="src/pages/img/logo/14.svg">
+      <img src="src/pages/img/logo/15.svg">
+      <img src="src/pages/img/logo/16.svg">
+      <img src="src/pages/img/logo/17.svg">
+      <img src="src/pages/img/logo/18.svg">
+      <img src="src/pages/img/logo/19.svg">
+      <img src="src/pages/img/logo/20.svg">
+      <img src="src/pages/img/logo/21.svg">
+  </div>
   <footer>
-    <p>© 2025 Khon Kaen University National Phenome Insitute (KKUNPhI) | <a href="https://kkunphi.github.io/Agbio2/">Visit Us Facebook</a></p>
+    <p>© 2025 Khon Kaen University National Phenome Institute (KKUNPhI) | <a href="https://kkunphi.github.io/Agbio2/">Visit Us on Facebook</a></p>
   </footer>
+</body>
 
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
+</html>
