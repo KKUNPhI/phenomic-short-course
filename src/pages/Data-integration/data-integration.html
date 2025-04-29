@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Data Integration in R</title>
   <style>
-    /* Reset & Base */
+    /* Base Style */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', 'Segoe UI', sans-serif;
@@ -72,24 +72,6 @@
       background: linear-gradient(to right, #0077ff, #00c3ff);
       margin: 60px 0;
     }
-    .home-button {
-      text-align: center;
-      margin: 50px 0;
-    }
-    button.home {
-      background: linear-gradient(to right, #0077ff, #00c3ff);
-      color: white;
-      padding: 12px 30px;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.1em;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    button.home:hover {
-      transform: scale(1.05);
-      background: linear-gradient(to right, #00c3ff, #0077ff);
-    }
     footer {
       margin-top: 80px;
       background: #1f1f1f;
@@ -105,15 +87,6 @@
     footer a:hover {
       text-decoration: underline;
     }
-    /* Responsive */
-    @media (max-width: 768px) {
-      body {
-        padding: 20px;
-      }
-      h1 {
-        font-size: 2.2em;
-      }
-    }
   </style>
 </head>
 
@@ -121,16 +94,19 @@
 
 <h1>Data Integration in R</h1>
 
-<p>This tutorial covers how to perform unsupervised and supervised multi-omics data integration in R.</p>
+<p>Perform unsupervised and supervised multi-omics integration, correlation analysis, and DIABLO modeling using R.</p>
 
-<h2>1. Unsupervised Omic Data Integration</h2>
+<h2>Unsupervised Omic Data Integration</h2>
 
-<h3>Install Required Packages</h3>
+<h3>Install Packages</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>install.packages("remotes")  # if not installed
-remotes::install_github("OmicsToolsLab/multiOmicsViz")  # Hypothetical repo name
+remotes::install_github("OmicsToolsLab/multiOmicsViz")
 
+BiocManager::available("multiOmics")
+
+# Install required packages
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install("multiOmicsViz")
@@ -138,35 +114,28 @@ BiocManager::install("multiOmicsViz")
 install.packages(c("ggplot2", "dplyr", "reshape2", "pheatmap", "ComplexHeatmap"))</code></pre>
 </div>
 
-<h3>Load Libraries</h3>
+<h3>Load Libraries and Data</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>library(multiOmicsViz)
-library(dplyr)</code></pre>
-</div>
+library(dplyr)
 
-<h3>Load Omics Data</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
+transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
 metabolome <- read.csv("metabolome_data.csv", row.names = 1)
 microbiome <- read.csv("microbiome_data.csv", row.names = 1)
-metadata <- read.csv("metadata.csv")</code></pre>
-</div>
+metadata <- read.csv("metadata.csv")
 
-<h3>Transpose for Sample-Wise Rows</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>t_expr <- t(transcriptome)
+# Transpose for sample-wise rows
+t_expr <- t(transcriptome)
 t_metab <- t(metabolome)
 t_microb <- t(microbiome)</code></pre>
 </div>
 
 <hr>
 
-<h2>2. Supervised Omic Data Integration</h2>
+<h2>Supervised Omic Data Integration</h2>
 
-<h3>Install Required Packages</h3>
+<h3>Install Essential Packages</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>install.packages(c("tidyverse", "reshape2", "pheatmap", "ggplot2", "corrplot"))
@@ -179,53 +148,116 @@ BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", 
   <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
 metab <- read.csv("metabolome_data.csv", row.names = 1)
 microb <- read.csv("microbiome_data.csv", row.names = 1)
-meta <- read.csv("metadata.csv")</code></pre>
-</div>
+meta <- read.csv("metadata.csv")
 
-<h3>Check for Sample Matching</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>intersect(colnames(expr), colnames(metab))</code></pre>
-</div>
+# Check for sample matching
+intersect(colnames(expr), colnames(metab))
 
-<h3>Transpose Datasets</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>t_expr <- t(expr)
+# Transpose
+t_expr <- t(expr)
 t_metab <- t(metab)
-t_microb <- t(microb)</code></pre>
+t_microb <- t(microb)
+
+# Combine datasets
+multi_omics <- cbind(t_expr, t_metab, t_microb)
+
+# Correlation matrix
+cor_matrix <- cor(multi_omics, method = "spearman")</code></pre>
 </div>
 
-<h3>Combine Datasets</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>multi_omics <- cbind(t_expr, t_metab, t_microb)</code></pre>
-</div>
-
-<h3>Correlation Analysis</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code>cor_matrix <- cor(multi_omics, method = "spearman")</code></pre>
-</div>
-
-<h3>Select Highly Correlated Pairs (|correlation| ≥ 0.7)</h3>
+<h3>Correlation Network</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>library(reshape2)
 cor_df <- melt(cor_matrix)
-cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.character(cor_df$Var2), ]</code></pre>
+cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.character(cor_df$Var2), ]
+
+library(igraph)
+g <- graph_from_data_frame(cor_df[, c("Var1", "Var2")])
+plot(g, vertex.size = 5, vertex.label.cex = 0.7)</code></pre>
 </div>
 
-<h3>Build Correlation Network</h3>
+<h3>Advanced Network Visualization</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
-  <pre><code>library(igraph)
-g <- graph_from_data_frame(cor_df, directed = FALSE)
-plot(g)</code></pre>
+  <pre><code>library(ggraph)
+library(tidygraph)
+
+g_tidy <- as_tbl_graph(g)
+ggraph(g_tidy, layout = 'fr') +
+  geom_edge_link(aes(alpha = cor_df$value), show.legend = FALSE) +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+  theme_void()</code></pre>
 </div>
 
-<div class="home-button">
-  <button class="home" onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
+<hr>
+
+<h2>DIABLO (Data Integration Analysis for Biomarker Discovery)</h2>
+
+<h3>Example with sPLS</h3>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>library(mixOmics)
+
+# sPLS Integration
+spls_result <- spls(X = t_expr, Y = t_metab, ncomp = 2, keepX = c(10, 10), keepY = c(10, 10))
+plotVar(
+  spls_result,
+  var.names = TRUE,
+  cex = c(2, 2),
+  title = "Variable Correlation Plot (sPLS)",
+  col = c("steelblue", "tomato"),
+  legend = TRUE
+)</code></pre>
+</div>
+
+<h3>DIABLO Multiblock Integration</h3>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
+metab <- read.csv("metabolome_data.csv", row.names = 1)
+microb <- read.csv("microbiome_data.csv", row.names = 1)
+meta <- read.csv("metadata.csv")
+
+X <- list(
+  transcriptome = t(expr),
+  metabolome = t(metab),
+  microbiome = t(microb)
+)
+
+Y <- as.factor(meta$Group)
+
+design <- matrix(1, ncol = length(X), nrow = length(X), dimnames = list(names(X), names(X)))
+diag(design) <- 0
+
+# DIABLO model
+diablo_model <- block.splsda(X, Y, ncomp = 2, design = design)</code></pre>
+</div>
+
+<h3>Visualizing DIABLO Results</h3>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code># Choose number of variables
+list.keepX <- list(
+  transcriptome = c(10, 10),
+  metabolome = c(10, 10),
+  microbiome = c(10, 10)
+)
+
+final_model <- block.splsda(X, Y, ncomp = 2, keepX = list.keepX, design = design)
+
+# Sample clustering
+plotIndiv(final_model, ind.names = FALSE, legend = TRUE, title = "Sample Clustering by DIABLO")
+
+# Circos plot
+par(cex = 1.5)
+circosPlot(
+  final_model,
+  cutoff = 0.7,
+  line = TRUE,
+  title = "Multi-Omics Correlation Network"
+)</code></pre>
 </div>
 
 <footer>
@@ -233,7 +265,7 @@ plot(g)</code></pre>
   <a href="https://kkunphi.github.io/Agbio2/">Visit our Facebook</a></p>
 </footer>
 
-<!-- JavaScript to handle Copy Button -->
+<!-- Copy to clipboard script -->
 <script>
 document.querySelectorAll('.copy-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
