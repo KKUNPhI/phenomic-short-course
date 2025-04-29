@@ -66,6 +66,24 @@
       transform: scale(1.05);
       background: linear-gradient(to right, #00c3ff, #0077ff);
     }
+    .home-button {
+      text-align: center;
+      margin: 60px 0 30px;
+    }
+    .home-button button {
+      background: linear-gradient(to right, #0077ff, #00c3ff);
+      color: white;
+      padding: 14px 40px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .home-button button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #00c3ff, #0077ff);
+    }
     hr {
       border: none;
       height: 2px;
@@ -94,7 +112,7 @@
 
 <h1>Data Integration in R</h1>
 
-<p>Perform unsupervised and supervised multi-omics integration, correlation analysis, and DIABLO modeling using R.</p>
+<p>Unsupervised and supervised multi-omics integration, correlation analysis, and DIABLO modeling.</p>
 
 <h2>Unsupervised Omic Data Integration</h2>
 
@@ -104,10 +122,13 @@
   <pre><code>install.packages("remotes")  # if not installed
 remotes::install_github("OmicsToolsLab/multiOmicsViz")
 
-BiocManager::available("multiOmics")
+BiocManager::available("multiOmics")</code></pre>
+</div>
 
-# Install required packages
-if (!requireNamespace("BiocManager", quietly = TRUE))
+<h3>Install Required Packages</h3>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install("multiOmicsViz")
 
@@ -123,10 +144,13 @@ library(dplyr)
 transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
 metabolome <- read.csv("metabolome_data.csv", row.names = 1)
 microbiome <- read.csv("microbiome_data.csv", row.names = 1)
-metadata <- read.csv("metadata.csv")
+metadata <- read.csv("metadata.csv")</code></pre>
+</div>
 
-# Transpose for sample-wise rows
-t_expr <- t(transcriptome)
+<h3>Transpose Datasets</h3>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>t_expr <- t(transcriptome)
 t_metab <- t(metabolome)
 t_microb <- t(microbiome)</code></pre>
 </div>
@@ -142,7 +166,7 @@ t_microb <- t(microbiome)</code></pre>
 BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", "ggraph", "ComplexHeatmap"))</code></pre>
 </div>
 
-<h3>Load Datasets and Preprocessing</h3>
+<h3>Load Data and Preprocessing</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
@@ -150,18 +174,14 @@ metab <- read.csv("metabolome_data.csv", row.names = 1)
 microb <- read.csv("microbiome_data.csv", row.names = 1)
 meta <- read.csv("metadata.csv")
 
-# Check for sample matching
 intersect(colnames(expr), colnames(metab))
 
-# Transpose
 t_expr <- t(expr)
 t_metab <- t(metab)
 t_microb <- t(microb)
 
-# Combine datasets
 multi_omics <- cbind(t_expr, t_metab, t_microb)
 
-# Correlation matrix
 cor_matrix <- cor(multi_omics, method = "spearman")</code></pre>
 </div>
 
@@ -193,14 +213,12 @@ ggraph(g_tidy, layout = 'fr') +
 
 <hr>
 
-<h2>DIABLO (Data Integration Analysis for Biomarker Discovery)</h2>
+<h2>Supervised Integration with sPLS</h2>
 
-<h3>Example with sPLS</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
   <pre><code>library(mixOmics)
 
-# sPLS Integration
 spls_result <- spls(X = t_expr, Y = t_metab, ncomp = 2, keepX = c(10, 10), keepY = c(10, 10))
 plotVar(
   spls_result,
@@ -212,10 +230,15 @@ plotVar(
 )</code></pre>
 </div>
 
-<h3>DIABLO Multiblock Integration</h3>
+<hr>
+
+<h2>Data Integration Analysis (DIABLO)</h2>
+
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
-  <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
+  <pre><code>library(mixOmics)
+
+expr <- read.csv("transcriptome_data.csv", row.names = 1)
 metab <- read.csv("metabolome_data.csv", row.names = 1)
 microb <- read.csv("microbiome_data.csv", row.names = 1)
 meta <- read.csv("metadata.csv")
@@ -231,14 +254,8 @@ Y <- as.factor(meta$Group)
 design <- matrix(1, ncol = length(X), nrow = length(X), dimnames = list(names(X), names(X)))
 diag(design) <- 0
 
-# DIABLO model
-diablo_model <- block.splsda(X, Y, ncomp = 2, design = design)</code></pre>
-</div>
+diablo_model <- block.splsda(X, Y, ncomp = 2, design = design)
 
-<h3>Visualizing DIABLO Results</h3>
-<div class="code-wrapper">
-  <button class="copy-btn">Copy</button>
-  <pre><code># Choose number of variables
 list.keepX <- list(
   transcriptome = c(10, 10),
   metabolome = c(10, 10),
@@ -247,10 +264,11 @@ list.keepX <- list(
 
 final_model <- block.splsda(X, Y, ncomp = 2, keepX = list.keepX, design = design)
 
-# Sample clustering
 plotIndiv(final_model, ind.names = FALSE, legend = TRUE, title = "Sample Clustering by DIABLO")
 
-# Circos plot
+circosPlot(final_model, cutoff = 0.7, line = TRUE)
+circosPlot(final_model, cutoff = 0.7, line = TRUE, title = "Multi-Omics Correlation Network")
+
 par(cex = 1.5)
 circosPlot(
   final_model,
@@ -261,15 +279,14 @@ circosPlot(
 </div>
 
 <div class="home-button">
-  <button class="home" onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
+  <button onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
 </div>
 
 <footer>
   <p>© 2025 Khon Kaen University National Phenome Institute (KKUNPhI) | 
-  <a href="www.facebook.com/kkunphi">Visit our Facebook</a></p>
+  <a href="https://kkunphi.github.io/Agbio2/">Visit our Facebook</a></p>
 </footer>
 
-<!-- Copy to clipboard script -->
 <script>
 document.querySelectorAll('.copy-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
