@@ -13,6 +13,57 @@
       overflow-x: auto;
     }
     code { font-family: Consolas, monospace; }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fdfdfd;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        text-align: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+    }
+    .page {
+        page-break-after: always;
+        padding: 0;
+    }
+    svg {
+        width: 100vw;
+        height: auto;
+        display: block;
+    }
+    footer {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+    footer a {
+        color: #f8f9fa;
+        text-decoration: none;
+    }
+    footer a:hover {
+        text-decoration: underline;
+    }
+    button {
+        background-color: #1b6d85;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+    .home-button {
+        text-align: center;
+        margin: 20px;
+    }
   </style>
 </head>
 <body>
@@ -97,6 +148,16 @@ cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.char
 g <- graph_from_data_frame(cor_df, directed = FALSE)
 plot(g)
 </code></pre>
+
+
+<div class="home-button">
+  <button onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Home</button>
+</div>
+
+<footer>
+  <p>© 2025 Khon Kaen University National Phenome Institute (KKUNPhI) | 
+  <a href="https://kkunphi.github.io/Agbio2/">Visit Us Facebook</a></p>
+</footer>
 
 </body>
 </html>
