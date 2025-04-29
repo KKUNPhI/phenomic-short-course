@@ -169,10 +169,11 @@ BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", 
 <h3>Load Data and Preprocessing</h3>
 <div class="code-wrapper">
   <button class="copy-btn">Copy</button>
-  <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
-metab <- read.csv("metabolome_data.csv", row.names = 1)
-microb <- read.csv("microbiome_data.csv", row.names = 1)
-meta <- read.csv("metadata.csv")
+  <pre><code>
+expr <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/transcriptome_data.csv", row.names = 1)
+metab <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/metabolome_data.csv", row.names = 1)
+microb <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/microbiome_data.csv", row.names = 1)
+meta <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/metadata.csv")
 
 intersect(colnames(expr), colnames(metab))
 
@@ -238,10 +239,10 @@ plotVar(
   <button class="copy-btn">Copy</button>
   <pre><code>library(mixOmics)
 
-expr <- read.csv("transcriptome_data.csv", row.names = 1)
-metab <- read.csv("metabolome_data.csv", row.names = 1)
-microb <- read.csv("microbiome_data.csv", row.names = 1)
-meta <- read.csv("metadata.csv")
+expr <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/transcriptome_data.csv", row.names = 1)
+metab <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/metabolome_data.csv", row.names = 1)
+microb <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/microbiome_data.csv", row.names = 1)
+meta <- read.csv("https://raw.githubusercontent.com/kkunphi/phenomic-short-course/master/src/pages/Data-integration/metadata.csv")
 
 X <- list(
   transcriptome = t(expr),
