@@ -4,68 +4,100 @@
   <meta charset="UTF-8">
   <title>Data Integration in R</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9f9f9; }
-    h1, h2 { color: #333; }
-    pre {
-      background-color: #eee;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-    }
-    code { font-family: Consolas, monospace; }
-
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-        font-family: Arial, sans-serif;
-        background-color: #fdfdfd;
-        margin: 0;
-        padding: 0;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #e0eafc);
+      padding: 40px;
+      color: #333;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #222;
+      margin-bottom: 20px;
     }
     h1 {
-        text-align: center;
-        padding: 20px;
-        background-color: #f0f0f0;
-        border-bottom: 1px solid #ccc;
+      text-align: center;
+      font-size: 3em;
+      background: linear-gradient(to right, #0077ff, #00c3ff);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 50px;
     }
-    .page {
-        page-break-after: always;
-        padding: 0;
+    h2 {
+      margin-top: 50px;
+      border-left: 5px solid #0077ff;
+      padding-left: 10px;
     }
-    svg {
-        width: 100vw;
-        height: auto;
-        display: block;
+    p {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 30px;
     }
-    footer {
-        background-color: #343a40;
-        color: white;
-        text-align: center;
-        padding: 20px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
+    pre {
+      background: #1f1f1f;
+      color: #d1d5db;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95em;
+      margin-top: 20px;
     }
-    footer a {
-        color: #f8f9fa;
-        text-decoration: none;
+    code {
+      font-family: 'Fira Code', monospace;
     }
-    footer a:hover {
-        text-decoration: underline;
-    }
-    button {
-        background-color: #1b6d85;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
+    hr {
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, #0077ff, #00c3ff);
+      margin: 60px 0;
     }
     .home-button {
-        text-align: center;
-        margin: 20px;
+      text-align: center;
+      margin: 50px 0;
+    }
+    button {
+      background: linear-gradient(to right, #0077ff, #00c3ff);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #00c3ff, #0077ff);
+    }
+    footer {
+      margin-top: 80px;
+      background: #1f1f1f;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+    footer a {
+      color: #00c3ff;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 2.2em;
+      }
     }
   </style>
 </head>
+
 <body>
 
 <h1>Data Integration in R</h1>
@@ -149,14 +181,13 @@ g <- graph_from_data_frame(cor_df, directed = FALSE)
 plot(g)
 </code></pre>
 
-
 <div class="home-button">
-  <button onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Home</button>
+  <button onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
 </div>
 
 <footer>
   <p>© 2025 Khon Kaen University National Phenome Institute (KKUNPhI) | 
-  <a href="https://kkunphi.github.io/Agbio2/">Visit Us Facebook</a></p>
+  <a href="https://kkunphi.github.io/Agbio2/">Visit our Facebook</a></p>
 </footer>
 
 </body>
