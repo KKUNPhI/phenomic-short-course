@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Integration in R</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9f9f9; }
+    h1, h2 { color: #333; }
+    pre {
+      background-color: #eee;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code { font-family: Consolas, monospace; }
+  </style>
+</head>
+<body>
+
+<h1>Data Integration in R</h1>
+
+<p>This tutorial covers how to perform unsupervised and supervised multi-omics data integration in R.</p>
+
+<h2>1. Unsupervised Omic Data Integration</h2>
+
+<h3>Install Required Packages</h3>
+<pre><code>install.packages("remotes")  # if not installed
+remotes::install_github("OmicsToolsLab/multiOmicsViz")  # Hypothetical repo name
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("multiOmicsViz")
+
+install.packages(c("ggplot2", "dplyr", "reshape2", "pheatmap", "ComplexHeatmap"))
+</code></pre>
+
+<h3>Load Libraries</h3>
+<pre><code>library(multiOmicsViz)
+library(dplyr)
+</code></pre>
+
+<h3>Load Omics Data</h3>
+<pre><code>transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
+metabolome <- read.csv("metabolome_data.csv", row.names = 1)
+microbiome <- read.csv("microbiome_data.csv", row.names = 1)
+metadata <- read.csv("metadata.csv")
+</code></pre>
+
+<h3>Transpose for Sample-Wise Rows</h3>
+<pre><code>t_expr <- t(transcriptome)
+t_metab <- t(metabolome)
+t_microb <- t(microbiome)
+</code></pre>
+
+<hr>
+
+<h2>2. Supervised Omic Data Integration</h2>
+
+<h3>Install Required Packages</h3>
+<pre><code>install.packages(c("tidyverse", "reshape2", "pheatmap", "ggplot2", "corrplot"))
+BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", "ggraph", "ComplexHeatmap"))
+</code></pre>
+
+<h3>Load Datasets and Preprocessing</h3>
+<pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
+metab <- read.csv("metabolome_data.csv", row.names = 1)
+microb <- read.csv("microbiome_data.csv", row.names = 1)
+meta <- read.csv("metadata.csv")
+</code></pre>
+
+<h3>Check for Sample Matching</h3>
+<pre><code>intersect(colnames(expr), colnames(metab))
+</code></pre>
+
+<h3>Transpose Datasets</h3>
+<pre><code>t_expr <- t(expr)
+t_metab <- t(metab)
+t_microb <- t(microb)
+</code></pre>
+
+<h3>Combine Datasets</h3>
+<pre><code>multi_omics <- cbind(t_expr, t_metab, t_microb)
+</code></pre>
+
+<h3>Correlation Analysis</h3>
+<pre><code>cor_matrix <- cor(multi_omics, method = "spearman")
+</code></pre>
+
+<h3>Select Highly Correlated Pairs (|correlation| ≥ 0.7)</h3>
+<pre><code>library(reshape2)
+cor_df <- melt(cor_matrix)
+cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.character(cor_df$Var2), ]
+</code></pre>
+
+<h3>Build Correlation Network</h3>
+<pre><code>library(igraph)
+g <- graph_from_data_frame(cor_df, directed = FALSE)
+plot(g)
+</code></pre>
+
+</body>
+</html>
