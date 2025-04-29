@@ -35,6 +35,10 @@
       font-size: 1.2em;
       margin-bottom: 30px;
     }
+    .code-wrapper {
+      position: relative;
+      margin-top: 20px;
+    }
     pre {
       background: #1f1f1f;
       color: #d1d5db;
@@ -42,10 +46,25 @@
       border-radius: 8px;
       overflow-x: auto;
       font-size: 0.95em;
-      margin-top: 20px;
-    }
-    code {
       font-family: 'Fira Code', monospace;
+    }
+    .copy-btn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: linear-gradient(to right, #0077ff, #00c3ff);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.8em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      z-index: 10;
+    }
+    .copy-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #00c3ff, #0077ff);
     }
     hr {
       border: none;
@@ -57,7 +76,7 @@
       text-align: center;
       margin: 50px 0;
     }
-    button {
+    button.home {
       background: linear-gradient(to right, #0077ff, #00c3ff);
       color: white;
       padding: 12px 30px;
@@ -67,7 +86,7 @@
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-    button:hover {
+    button.home:hover {
       transform: scale(1.05);
       background: linear-gradient(to right, #00c3ff, #0077ff);
     }
@@ -107,88 +126,125 @@
 <h2>1. Unsupervised Omic Data Integration</h2>
 
 <h3>Install Required Packages</h3>
-<pre><code>install.packages("remotes")  # if not installed
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>install.packages("remotes")  # if not installed
 remotes::install_github("OmicsToolsLab/multiOmicsViz")  # Hypothetical repo name
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install("multiOmicsViz")
 
-install.packages(c("ggplot2", "dplyr", "reshape2", "pheatmap", "ComplexHeatmap"))
-</code></pre>
+install.packages(c("ggplot2", "dplyr", "reshape2", "pheatmap", "ComplexHeatmap"))</code></pre>
+</div>
 
 <h3>Load Libraries</h3>
-<pre><code>library(multiOmicsViz)
-library(dplyr)
-</code></pre>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>library(multiOmicsViz)
+library(dplyr)</code></pre>
+</div>
 
 <h3>Load Omics Data</h3>
-<pre><code>transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>transcriptome <- read.csv("transcriptome_data.csv", row.names = 1)
 metabolome <- read.csv("metabolome_data.csv", row.names = 1)
 microbiome <- read.csv("microbiome_data.csv", row.names = 1)
-metadata <- read.csv("metadata.csv")
-</code></pre>
+metadata <- read.csv("metadata.csv")</code></pre>
+</div>
 
 <h3>Transpose for Sample-Wise Rows</h3>
-<pre><code>t_expr <- t(transcriptome)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>t_expr <- t(transcriptome)
 t_metab <- t(metabolome)
-t_microb <- t(microbiome)
-</code></pre>
+t_microb <- t(microbiome)</code></pre>
+</div>
 
 <hr>
 
 <h2>2. Supervised Omic Data Integration</h2>
 
 <h3>Install Required Packages</h3>
-<pre><code>install.packages(c("tidyverse", "reshape2", "pheatmap", "ggplot2", "corrplot"))
-BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", "ggraph", "ComplexHeatmap"))
-</code></pre>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>install.packages(c("tidyverse", "reshape2", "pheatmap", "ggplot2", "corrplot"))
+BiocManager::install(c("mixOmics", "clusterProfiler", "org.Hs.eg.db", "igraph", "ggraph", "ComplexHeatmap"))</code></pre>
+</div>
 
 <h3>Load Datasets and Preprocessing</h3>
-<pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>expr <- read.csv("transcriptome_data.csv", row.names = 1)
 metab <- read.csv("metabolome_data.csv", row.names = 1)
 microb <- read.csv("microbiome_data.csv", row.names = 1)
-meta <- read.csv("metadata.csv")
-</code></pre>
+meta <- read.csv("metadata.csv")</code></pre>
+</div>
 
 <h3>Check for Sample Matching</h3>
-<pre><code>intersect(colnames(expr), colnames(metab))
-</code></pre>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>intersect(colnames(expr), colnames(metab))</code></pre>
+</div>
 
 <h3>Transpose Datasets</h3>
-<pre><code>t_expr <- t(expr)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>t_expr <- t(expr)
 t_metab <- t(metab)
-t_microb <- t(microb)
-</code></pre>
+t_microb <- t(microb)</code></pre>
+</div>
 
 <h3>Combine Datasets</h3>
-<pre><code>multi_omics <- cbind(t_expr, t_metab, t_microb)
-</code></pre>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>multi_omics <- cbind(t_expr, t_metab, t_microb)</code></pre>
+</div>
 
 <h3>Correlation Analysis</h3>
-<pre><code>cor_matrix <- cor(multi_omics, method = "spearman")
-</code></pre>
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>cor_matrix <- cor(multi_omics, method = "spearman")</code></pre>
+</div>
 
 <h3>Select Highly Correlated Pairs (|correlation| ≥ 0.7)</h3>
-<pre><code>library(reshape2)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>library(reshape2)
 cor_df <- melt(cor_matrix)
-cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.character(cor_df$Var2), ]
-</code></pre>
+cor_df <- cor_df[abs(cor_df$value) >= 0.7 & as.character(cor_df$Var1) != as.character(cor_df$Var2), ]</code></pre>
+</div>
 
 <h3>Build Correlation Network</h3>
-<pre><code>library(igraph)
+<div class="code-wrapper">
+  <button class="copy-btn">Copy</button>
+  <pre><code>library(igraph)
 g <- graph_from_data_frame(cor_df, directed = FALSE)
-plot(g)
-</code></pre>
+plot(g)</code></pre>
+</div>
 
 <div class="home-button">
-  <button onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
+  <button class="home" onclick="location.href='https://kkunphi.github.io/phenomic-short-course/'">Back to Home</button>
 </div>
 
 <footer>
   <p>© 2025 Khon Kaen University National Phenome Institute (KKUNPhI) | 
   <a href="https://kkunphi.github.io/Agbio2/">Visit our Facebook</a></p>
 </footer>
+
+<!-- JavaScript to handle Copy Button -->
+<script>
+document.querySelectorAll('.copy-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = 'Copied!';
+      setTimeout(() => btn.innerText = 'Copy', 1500);
+    });
+  });
+});
+</script>
 
 </body>
 </html>
