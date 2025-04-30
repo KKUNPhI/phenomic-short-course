@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Countdown Timer</title>
+  <title>Exam Timer - Central Countdown</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #232526, #414345);
       height: 100vh;
       display: flex;
       align-items: center;
@@ -18,118 +18,69 @@
 
     .container {
       text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px 50px;
       border-radius: 20px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     }
 
     h1 {
       margin-bottom: 20px;
       font-size: 2.5rem;
+      color: #f0c674;
     }
 
     .timer {
-      font-size: 3rem;
+      font-size: 4rem;
       margin: 20px 0;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
-    .controls input {
-      width: 70px;
-      padding: 10px;
-      margin: 10px;
-      font-size: 1rem;
-      text-align: center;
-      border-radius: 10px;
-      border: none;
-    }
-
-    .buttons button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      transition: background 0.2s ease;
-    }
-
-    .buttons button:hover {
-      background: rgba(255, 255, 255, 0.4);
+    .note {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>Countdown Timer</h1>
-    <div class="timer" id="countdown">00:00</div>
-
-    <div class="controls">
-      <input type="number" id="minutes" placeholder="Min" min="0">
-      <input type="number" id="seconds" placeholder="Sec" min="0" max="59">
-    </div>
-
-    <div class="buttons">
-      <button onclick="startTimer()">Start</button>
-      <button onclick="pauseTimer()">Pause</button>
-      <button onclick="resetTimer()">Reset</button>
-    </div>
+    <h1>Exam Countdown Timer</h1>
+    <div class="timer" id="countdown">--:--:--</div>
+    <div class="note" id="status">Syncing time...</div>
   </div>
 
   <script>
-    let countdownEl = document.getElementById('countdown');
-    let minutesInput = document.getElementById('minutes');
-    let secondsInput = document.getElementById('seconds');
+    // Set your fixed END time here (24-hour format)
+    // Example: April 30, 2025 at 11:30 AM UTC+7 (Bangkok time)
+    const targetTime = new Date("2025-04-30T04:30:00Z"); // UTC (11:30 +0700)
 
-    let timer;
-    let totalSeconds = 0;
-    let paused = false;
+    const countdownEl = document.getElementById("countdown");
+    const statusEl = document.getElementById("status");
 
-    function startTimer() {
-      if (!paused) {
-        const minutes = parseInt(minutesInput.value) || 0;
-        const seconds = parseInt(secondsInput.value) || 0;
-        totalSeconds = minutes * 60 + seconds;
+    function updateCountdown() {
+      const now = new Date();
+      const diff = Math.floor((targetTime - now) / 1000);
+
+      if (diff <= 0) {
+        countdownEl.textContent = "00:00:00";
+        statusEl.textContent = "Time's up!";
+        return;
       }
 
-      if (totalSeconds <= 0) return;
+      const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+      const minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+      const seconds = String(diff % 60).padStart(2, '0');
 
-      paused = false;
-      timer = setInterval(() => {
-        if (totalSeconds <= 0) {
-          clearInterval(timer);
-          countdownEl.textContent = "00:00";
-          return;
-        }
-
-        totalSeconds--;
-        updateDisplay();
-      }, 1000);
+      countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
+      statusEl.textContent = `Time remaining until exam ends`;
     }
 
-    function pauseTimer() {
-      clearInterval(timer);
-      paused = true;
-    }
-
-    function resetTimer() {
-      clearInterval(timer);
-      paused = false;
-      totalSeconds = 0;
-      countdownEl.textContent = "00:00";
-      minutesInput.value = "";
-      secondsInput.value = "";
-    }
-
-    function updateDisplay() {
-      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-      const secs = String(totalSeconds % 60).padStart(2, '0');
-      countdownEl.textContent = `${mins}:${secs}`;
-    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
   </script>
 
 </body>
