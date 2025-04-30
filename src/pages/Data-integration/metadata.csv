@@ -1,0 +1,11 @@
+SampleID,Group,Age,Sex,BMI
+Sample1,Control,42,Female,27.8
+Sample2,Control,40,Male,23.4
+Sample3,Control,43,Female,25.4
+Sample4,Control,48,Female,23.2
+Sample5,Control,40,Female,22.9
+Sample6,Disease,42,Male,26.0
+Sample7,Disease,43,Male,22.5
+Sample8,Disease,42,Male,18.4
+Sample9,Disease,30,Female,22.3
+Sample10,Disease,37,Male,24.1
