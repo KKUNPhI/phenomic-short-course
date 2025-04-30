@@ -10,6 +10,14 @@
       --bg: #f9f9f9;
       --text: #1a1a1a;
       --accent: #007acc;
+      --timer-bg: #fff;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111;
+      --text: #f0f0f0;
+      --accent: #4fc3f7;
+      --timer-bg: #222;
     }
 
     * {
@@ -27,87 +35,70 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      animation: fadeIn 1.2s ease;
+      transition: background 0.3s, color 0.3s;
+      padding: 20px;
     }
 
     .wrapper {
       text-align: center;
-      animation: floatIn 1.4s ease;
+      background-color: var(--timer-bg);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      transition: background 0.3s;
+      width: 100%;
+      max-width: 500px;
     }
 
     h1 {
       font-size: 2rem;
       margin-bottom: 1.5rem;
       color: var(--accent);
-      font-weight: 600;
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
-      animation-delay: 0.3s;
     }
 
     .timer {
-      font-size: 6rem;
+      font-size: 5rem;
       font-weight: 600;
       letter-spacing: 0.1em;
-      transition: transform 0.2s ease;
-      animation: pulse 1s ease-in-out infinite alternate;
+      margin: 20px 0;
     }
 
     .note {
-      margin-top: 1rem;
       font-size: 1rem;
-      color: #555;
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
-      animation-delay: 0.8s;
+      color: var(--text);
     }
 
-    .fullscreen-btn {
-      margin-top: 2rem;
+    .fullscreen-btn, .theme-toggle {
+      margin-top: 30px;
       padding: 10px 20px;
       font-size: 1rem;
-      background-color: var(--accent);
-      color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
-      animation-delay: 1.2s;
+      background-color: var(--accent);
+      color: white;
     }
 
-    .fullscreen-btn:hover {
-      background-color: #005a99;
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 0.9rem;
+      padding: 8px 14px;
+    }
+
+    .fullscreen-btn:hover, .theme-toggle:hover {
+      opacity: 0.9;
     }
 
     @media (max-width: 600px) {
       .timer {
-        font-size: 3.5rem;
+        font-size: 3rem;
       }
+
       h1 {
         font-size: 1.5rem;
       }
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0 }
-      to   { opacity: 1 }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes floatIn {
-      0%   { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes pulse {
-      0%   { transform: scale(1); }
-      100% { transform: scale(1.03); }
     }
   </style>
 </head>
@@ -119,6 +110,8 @@
     <div class="note" id="status">Waiting for end time...</div>
     <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
   </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
 
   <script>
     const countdownEl = document.getElementById("countdown");
@@ -152,7 +145,7 @@
       const seconds = String(diff % 60).padStart(2, '0');
 
       countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
-      statusEl.textContent = `Exam ends at: ${targetTime.toLocaleTimeString()}`;
+      statusEl.textContent = `Exam ends at: ${targetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
 
     function toggleFullscreen() {
@@ -163,6 +156,18 @@
         document.exitFullscreen();
       }
     }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    }
+
+    (function () {
+      const saved = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", saved);
+    })();
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
