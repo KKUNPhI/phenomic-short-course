@@ -4,19 +4,36 @@
   <meta charset="UTF-8">
   <title>Set Exam Time</title>
   <style>
+    :root {
+      --bg: #f7f7f7;
+      --box-bg: #fff;
+      --text: #222;
+      --accent: #007acc;
+      --button-bg: #eee;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1a1a;
+      --box-bg: #2a2a2a;
+      --text: #f0f0f0;
+      --accent: #4fc3f7;
+      --button-bg: #444;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #c3ec52, #0ba29d);
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      color: #333;
+      transition: background 0.3s, color 0.3s;
     }
 
     .box {
-      background: #fff;
+      background: var(--box-bg);
       padding: 40px;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -46,12 +63,14 @@
       font-size: 1rem;
       cursor: pointer;
       border: none;
-      background: #eee;
+      background: var(--button-bg);
       border-radius: 6px;
+      transition: background 0.3s;
+      color: var(--text);
     }
 
     .tab-buttons button.active {
-      background: #007acc;
+      background: var(--accent);
       color: white;
     }
 
@@ -81,13 +100,15 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       text-align: center;
+      background: var(--box-bg);
+      color: var(--text);
     }
 
     .save-btn {
       padding: 12px;
       font-size: 1rem;
       width: 100%;
-      background-color: #007acc;
+      background-color: var(--accent);
       color: white;
       border: none;
       border-radius: 8px;
@@ -96,14 +117,12 @@
     }
 
     .save-btn:hover {
-      background-color: #005fa3;
+      opacity: 0.9;
     }
 
     #statusMsg {
       font-size: 0.9rem;
       text-align: center;
-      color: #444;
-      margin-top: -10px;
     }
 
     .duration-flex {
@@ -117,11 +136,17 @@
       flex: 1;
     }
 
-    @media (max-width: 480px) {
-      .box {
-        padding: 30px 20px;
-        border-radius: 0;
-      }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -154,6 +179,8 @@
   <p id="statusMsg"></p>
 </div>
 
+<button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
 <script>
   function switchTab(tab) {
     document.querySelectorAll(".tab-buttons button").forEach(btn => btn.classList.remove("active"));
@@ -169,20 +196,12 @@
     if (activeTab === "duration") {
       const hours = parseInt(document.getElementById("durHour").value) || 0;
       const minutes = parseInt(document.getElementById("durMin").value) || 0;
-
-      if (minutes > 59) {
-        alert("Minutes must be less than 60");
-        return;
-      }
-
+      if (minutes > 59) return alert("Minutes must be less than 60");
       const now = new Date();
       targetTime = new Date(now.getTime() + (hours * 60 + minutes) * 60000);
     } else {
       const input = document.getElementById("dateTimeInput").value;
-      if (!input) {
-        alert("Please select a date and time.");
-        return;
-      }
+      if (!input) return alert("Please select a date and time.");
       targetTime = new Date(input);
     }
 
@@ -190,6 +209,20 @@
     document.getElementById("statusMsg").textContent =
       `End time saved: ${targetTime.toLocaleString('en-GB')}`;
   }
+
+  // Theme toggle
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+  }
+
+  // Load theme on start
+  (function () {
+    const saved = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", saved);
+  })();
 </script>
 
 </body>
