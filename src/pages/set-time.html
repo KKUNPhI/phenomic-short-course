@@ -18,24 +18,26 @@
     .box {
       background: #fff;
       padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
       width: 100%;
-      max-width: 450px;
+      max-width: 400px;
       gap: 20px;
     }
 
     h1 {
       font-size: 1.8rem;
+      margin-bottom: 10px;
       text-align: center;
     }
 
     .tab-buttons {
       display: flex;
       gap: 10px;
+      width: 100%;
     }
 
     .tab-buttons button {
@@ -45,7 +47,6 @@
       cursor: pointer;
       border: none;
       background: #eee;
-      transition: background 0.3s ease;
       border-radius: 6px;
     }
 
@@ -57,24 +58,26 @@
     .form-section {
       display: none;
       flex-direction: column;
-      gap: 10px;
-      align-text: center;
+      align-items: center;
+      width: 100%;
     }
 
     .form-section.active {
       display: flex;
-      align-text: center;
     }
 
     label {
-      text-align: center;
       font-size: 0.95rem;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      text-align: center;
     }
 
-    input {
+    input[type="number"],
+    input[type="datetime-local"] {
       padding: 10px;
       font-size: 1rem;
+      width: 100%;
+      max-width: 250px;
       border-radius: 6px;
       border: 1px solid #ccc;
       text-align: center;
@@ -83,11 +86,13 @@
     .save-btn {
       padding: 12px;
       font-size: 1rem;
+      width: 100%;
       background-color: #007acc;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      max-width: 300px;
     }
 
     .save-btn:hover {
@@ -98,11 +103,24 @@
       font-size: 0.9rem;
       text-align: center;
       color: #444;
+      margin-top: -10px;
     }
 
-    @media (max-width: 500px) {
+    .duration-flex {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .duration-flex input {
+      flex: 1;
+    }
+
+    @media (max-width: 480px) {
       .box {
         padding: 30px 20px;
+        border-radius: 0;
       }
     }
   </style>
@@ -117,13 +135,16 @@
     <button onclick="switchTab('datetime')">Date & Time</button>
   </div>
 
-  <!-- Duration with time input -->
+  <!-- Duration -->
   <div class="form-section active" id="duration">
-    <label for="durTime">Duration (hh:mm)</label>
-    <input type="time" id="durTime" step="60" value="01:00">
+    <label>Duration</label>
+    <div class="duration-flex">
+      <input type="number" id="durHour" min="0" placeholder="Hours">
+      <input type="number" id="durMin" min="0" max="59" placeholder="Minutes">
+    </div>
   </div>
 
-  <!-- Fixed date & time -->
+  <!-- Date & Time -->
   <div class="form-section" id="datetime">
     <label for="dateTimeInput">End Date & Time</label>
     <input type="datetime-local" id="dateTimeInput">
@@ -137,7 +158,6 @@
   function switchTab(tab) {
     document.querySelectorAll(".tab-buttons button").forEach(btn => btn.classList.remove("active"));
     document.querySelectorAll(".form-section").forEach(div => div.classList.remove("active"));
-
     document.querySelector(`.tab-buttons button[onclick*='${tab}']`).classList.add("active");
     document.getElementById(tab).classList.add("active");
   }
@@ -147,20 +167,28 @@
     let targetTime;
 
     if (activeTab === "duration") {
-      const timeStr = document.getElementById("durTime").value;
-      if (!timeStr) return alert("Please set a duration.");
-      const [hours, minutes] = timeStr.split(":").map(Number);
+      const hours = parseInt(document.getElementById("durHour").value) || 0;
+      const minutes = parseInt(document.getElementById("durMin").value) || 0;
+
+      if (minutes > 59) {
+        alert("Minutes must be less than 60");
+        return;
+      }
+
       const now = new Date();
       targetTime = new Date(now.getTime() + (hours * 60 + minutes) * 60000);
     } else {
       const input = document.getElementById("dateTimeInput").value;
-      if (!input) return alert("Please select a date and time.");
+      if (!input) {
+        alert("Please select a date and time.");
+        return;
+      }
       targetTime = new Date(input);
     }
 
     localStorage.setItem("examEndTime", targetTime.toISOString());
     document.getElementById("statusMsg").textContent =
-      `End time saved: ${targetTime.toLocaleString()}`;
+      `End time saved: ${targetTime.toLocaleString('en-GB')}`;
   }
 </script>
 
