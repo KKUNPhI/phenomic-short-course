@@ -4,53 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Exam Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #232526, #414345);
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
+    :root {
+      --bg: #f9f9f9;
+      --text: #1a1a1a;
+      --accent: #007acc;
     }
 
-    .container {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .wrapper {
       text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 30px 50px;
-      border-radius: 20px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     }
 
     h1 {
-      margin-bottom: 20px;
-      font-size: 2.5rem;
-      color: #f0c674;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+      font-weight: 600;
     }
 
     .timer {
-      font-size: 4rem;
-      margin: 20px 0;
-      font-weight: bold;
-      letter-spacing: 2px;
+      font-size: 6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      transition: all 0.3s ease;
     }
 
     .note {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      color: #ccc;
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .fullscreen-btn {
+      margin-top: 2rem;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .fullscreen-btn:hover {
+      background-color: #005a99;
+    }
+
+    @media (max-width: 600px) {
+      .timer {
+        font-size: 3.5rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Exam Countdown Timer</h1>
+  <div class="wrapper">
+    <h1>Central Exam Timer</h1>
     <div class="timer" id="countdown">--:--:--</div>
     <div class="note" id="status">Waiting for end time...</div>
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
   </div>
 
   <script>
@@ -86,6 +120,15 @@
 
       countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
       statusEl.textContent = `Exam ends at: ${targetTime.toLocaleTimeString()}`;
+    }
+
+    function toggleFullscreen() {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
+      } else {
+        document.exitFullscreen();
+      }
     }
 
     setInterval(updateCountdown, 1000);
