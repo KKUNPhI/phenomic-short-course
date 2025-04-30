@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Exam Timer - Central Countdown</title>
+  <title>Exam Timer</title>
   <style>
     body {
       margin: 0;
@@ -50,18 +50,27 @@
   <div class="container">
     <h1>Exam Countdown Timer</h1>
     <div class="timer" id="countdown">--:--:--</div>
-    <div class="note" id="status">Syncing time...</div>
+    <div class="note" id="status">Waiting for end time...</div>
   </div>
 
   <script>
-    // Set your fixed END time here (24-hour format)
-    // Example: April 30, 2025 at 11:30 AM UTC+7 (Bangkok time)
-    const targetTime = new Date("2025-04-30T04:30:00Z"); // UTC (11:30 +0700)
-
     const countdownEl = document.getElementById("countdown");
     const statusEl = document.getElementById("status");
 
+    function getEndTime() {
+      const stored = localStorage.getItem("examEndTime");
+      return stored ? new Date(stored) : null;
+    }
+
     function updateCountdown() {
+      const targetTime = getEndTime();
+
+      if (!targetTime) {
+        countdownEl.textContent = "--:--:--";
+        statusEl.textContent = "No end time set. Please contact the admin.";
+        return;
+      }
+
       const now = new Date();
       const diff = Math.floor((targetTime - now) / 1000);
 
@@ -76,11 +85,11 @@
       const seconds = String(diff % 60).padStart(2, '0');
 
       countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
-      statusEl.textContent = `Time remaining until exam ends`;
+      statusEl.textContent = `Exam ends at: ${targetTime.toLocaleTimeString()}`;
     }
 
-    updateCountdown();
     setInterval(updateCountdown, 1000);
+    updateCountdown();
   </script>
 
 </body>
