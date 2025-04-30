@@ -3,64 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Modern Live Timer</title>
+  <title>Countdown Timer</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      color: #333;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     }
 
     h1 {
+      margin-bottom: 20px;
       font-size: 2.5rem;
-      margin-bottom: 30px;
-      color: #fff;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
     }
 
     .timer {
-      font-size: 4rem;
-      font-weight: bold;
-      background: rgba(255, 255, 255, 0.15);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-      padding: 20px 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      font-size: 3rem;
+      margin: 20px 0;
+    }
+
+    .controls input {
+      width: 70px;
+      padding: 10px;
+      margin: 10px;
+      font-size: 1rem;
+      text-align: center;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
+      transition: background 0.2s ease;
+    }
+
+    .buttons button:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
 <body>
 
-  <h1>Live Timer</h1>
-  <div class="timer" id="timer">00:00:00</div>
+  <div class="container">
+    <h1>Countdown Timer</h1>
+    <div class="timer" id="countdown">00:00</div>
+
+    <div class="controls">
+      <input type="number" id="minutes" placeholder="Min" min="0">
+      <input type="number" id="seconds" placeholder="Sec" min="0" max="59">
+    </div>
+
+    <div class="buttons">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
 
   <script>
-    const timerEl = document.getElementById('timer');
-    const startTime = new Date();
+    let countdownEl = document.getElementById('countdown');
+    let minutesInput = document.getElementById('minutes');
+    let secondsInput = document.getElementById('seconds');
 
-    function updateTimer() {
-      const now = new Date();
-      const elapsed = Math.floor((now - startTime) / 1000);
-      const hours = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-      const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-      const seconds = String(elapsed % 60).padStart(2, '0');
-      timerEl.textContent = `${hours}:${minutes}:${seconds}`;
+    let timer;
+    let totalSeconds = 0;
+    let paused = false;
+
+    function startTimer() {
+      if (!paused) {
+        const minutes = parseInt(minutesInput.value) || 0;
+        const seconds = parseInt(secondsInput.value) || 0;
+        totalSeconds = minutes * 60 + seconds;
+      }
+
+      if (totalSeconds <= 0) return;
+
+      paused = false;
+      timer = setInterval(() => {
+        if (totalSeconds <= 0) {
+          clearInterval(timer);
+          countdownEl.textContent = "00:00";
+          return;
+        }
+
+        totalSeconds--;
+        updateDisplay();
+      }, 1000);
     }
 
-    setInterval(updateTimer, 1000);
+    function pauseTimer() {
+      clearInterval(timer);
+      paused = true;
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      paused = false;
+      totalSeconds = 0;
+      countdownEl.textContent = "00:00";
+      minutesInput.value = "";
+      secondsInput.value = "";
+    }
+
+    function updateDisplay() {
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      countdownEl.textContent = `${mins}:${secs}`;
+    }
   </script>
 
 </body>
