@@ -66,7 +66,8 @@
 
     const time = new Date(input).toISOString();
     localStorage.setItem("examEndTime", time);
-    document.getElementById("statusMsg").textContent = `Saved! End time set to: ${new Date(time).toLocaleString()}`;
+    document.getElementById("statusMsg").textContent =
+      `Saved! End time set to: ${new Date(time).toLocaleString()}`;
   }
 </script>
 
