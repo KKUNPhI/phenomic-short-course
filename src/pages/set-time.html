@@ -94,14 +94,15 @@
     <button onclick="switchTab('datetime')">Date & Time</button>
   </div>
 
-  <!-- Duration -->
+  <!-- Duration with time input -->
   <div class="form-section active" id="duration">
-    <input type="number" id="durHour" placeholder="Hours" min="0">
-    <input type="number" id="durMin" placeholder="Minutes" min="0" max="59">
+    <label for="durTime">Duration (hh:mm)</label>
+    <input type="time" id="durTime" step="60" value="01:00">
   </div>
 
-  <!-- Date Time -->
+  <!-- Fixed date & time -->
   <div class="form-section" id="datetime">
+    <label for="dateTimeInput">End Date & Time</label>
     <input type="datetime-local" id="dateTimeInput">
   </div>
 
@@ -123,8 +124,9 @@
     let targetTime;
 
     if (activeTab === "duration") {
-      const hours = parseInt(document.getElementById("durHour").value) || 0;
-      const minutes = parseInt(document.getElementById("durMin").value) || 0;
+      const timeStr = document.getElementById("durTime").value;
+      if (!timeStr) return alert("Please set a duration.");
+      const [hours, minutes] = timeStr.split(":").map(Number);
       const now = new Date();
       targetTime = new Date(now.getTime() + (hours * 60 + minutes) * 60000);
     } else {
