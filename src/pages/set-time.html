@@ -2,40 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Set Exam Timer</title>
+  <title>Set Exam Time</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #00c9ff, #92fe9d);
+      background: linear-gradient(135deg, #c3ec52, #0ba29d);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      color: #333;
     }
 
     .box {
-      background: white;
+      background: #fff;
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    input[type="datetime-local"] {
-      padding: 10px;
-      font-size: 1rem;
-      margin-bottom: 20px;
+      max-width: 400px;
       width: 100%;
     }
 
-    button {
-      padding: 10px 20px;
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons button {
+      flex: 1;
+      padding: 10px;
       font-size: 1rem;
-      background: #333;
+      cursor: pointer;
+      border: none;
+      background: #eee;
+      transition: background 0.3s ease;
+    }
+
+    .tab-buttons button.active {
+      background: #007acc;
+      color: white;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button.save-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #007acc;
       color: white;
       border: none;
       border-radius: 8px;
@@ -43,9 +79,8 @@
     }
 
     p {
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 0.9rem;
-      color: #444;
     }
   </style>
 </head>
@@ -53,21 +88,54 @@
 
 <div class="box">
   <h1>Set Exam End Time</h1>
-  <input type="datetime-local" id="endTimeInput" />
-  <br>
-  <button onclick="saveTime()">Save Time</button>
+
+  <div class="tab-buttons">
+    <button class="active" onclick="switchTab('duration')">Duration</button>
+    <button onclick="switchTab('datetime')">Date & Time</button>
+  </div>
+
+  <!-- Duration -->
+  <div class="form-section active" id="duration">
+    <input type="number" id="durHour" placeholder="Hours" min="0">
+    <input type="number" id="durMin" placeholder="Minutes" min="0" max="59">
+  </div>
+
+  <!-- Date Time -->
+  <div class="form-section" id="datetime">
+    <input type="datetime-local" id="dateTimeInput">
+  </div>
+
+  <button class="save-btn" onclick="saveTime()">Save End Time</button>
   <p id="statusMsg"></p>
 </div>
 
 <script>
-  function saveTime() {
-    const input = document.getElementById("endTimeInput").value;
-    if (!input) return alert("Please select a time.");
+  function switchTab(tab) {
+    document.querySelectorAll(".tab-buttons button").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".form-section").forEach(div => div.classList.remove("active"));
 
-    const time = new Date(input).toISOString();
-    localStorage.setItem("examEndTime", time);
+    document.querySelector(`.tab-buttons button[onclick*='${tab}']`).classList.add("active");
+    document.getElementById(tab).classList.add("active");
+  }
+
+  function saveTime() {
+    const activeTab = document.querySelector(".form-section.active").id;
+    let targetTime;
+
+    if (activeTab === "duration") {
+      const hours = parseInt(document.getElementById("durHour").value) || 0;
+      const minutes = parseInt(document.getElementById("durMin").value) || 0;
+      const now = new Date();
+      targetTime = new Date(now.getTime() + (hours * 60 + minutes) * 60000);
+    } else {
+      const input = document.getElementById("dateTimeInput").value;
+      if (!input) return alert("Please select a date and time.");
+      targetTime = new Date(input);
+    }
+
+    localStorage.setItem("examEndTime", targetTime.toISOString());
     document.getElementById("statusMsg").textContent =
-      `Saved! End time set to: ${new Date(time).toLocaleString()}`;
+      `End time saved: ${targetTime.toLocaleString()}`;
   }
 </script>
 
